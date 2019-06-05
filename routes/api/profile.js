@@ -118,8 +118,8 @@ router.post(
     if (req.body.location) profileFields.location = req.body.location;
     if (req.body.bio) profileFields.bio = req.body.bio;
     if (req.body.status) profileFields.status = req.body.status;
-    if (req.body.gihubusername)
-      profileFields.gihubusername = req.body.gihubusername;
+    if (req.body.githubusername)
+      profileFields.githubusername = req.body.githubusername;
     //Skills - Split into array
     if (typeof req.body.skills !== "undefined")
       profileFields.skills = req.body.skills.split(",");
@@ -130,6 +130,7 @@ router.post(
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
+    // console.log(profileFields);
 
     Profile.findOne({ user: req.user.id }).then(profile => {
       if (profile) {
@@ -140,6 +141,7 @@ router.post(
           { new: true }
         ).then(profile => {
           res.json(profile);
+          // console.log(profile);
         });
       } else {
         // Create
@@ -164,7 +166,6 @@ router.post(
   "/experience",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log(req.body.company);
     const { errors, isValid } = validateExperienceInput(req.body);
 
     // Check validation
@@ -174,7 +175,6 @@ router.post(
     }
 
     Profile.findOne({ user: req.user.id }).then(profile => {
-      console.log(profile);
       const newExp = {
         title: req.body.title,
         company: req.body.company,
